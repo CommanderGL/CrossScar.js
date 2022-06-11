@@ -6,7 +6,12 @@ export default class Scar {
 	}
 
 	append(element) {
-		this.tempElem = document.createElement(element.type)
+		if ( element.type == "text" ) {
+			this.tempElem = document.createElement("input")
+			this.tempElem.setAttribute("type", "text")
+		} else {
+			this.tempElem = document.createElement(element.type)
+		}
 		if (element.props) {
 			element.props.forEach(prop => {
 				this.tempElem.setAttribute(prop.prop, prop.value)
@@ -27,11 +32,11 @@ export default class Scar {
 		return this.parent
 	}
 
-	get innerHTML() {
+	get html() {
 		return this.parent.innerHTML
 	}
 
-	set innerHTML(value) {
+	set html(value) {
 		this.parent.innerHTML = value
 	}
 
@@ -43,7 +48,7 @@ export default class Scar {
 		this.parent.value = value
 	}
 
-	get type() {
+	get tag() {
 		return this.parent.nodeName
 	}
 
@@ -52,12 +57,42 @@ export default class Scar {
 		return this
 	}
 
-	css(file) {
-		this.tempElem = document.createElement("link")
-		this.tempElem.setAttribute("href", file)
-		this.tempElem.setAttribute("rel", "stylesheet")
-		this.tempElem.setAttribute("type", "text/css")
+	addEvent(event, cb) {
+		this.parent.addEventListener(event, e => {
+			cb(e)
+		})
+	}
 
-		document.head.appendChild(this.tempElem)
+	get children() {
+		return this.parent.children
+	}
+}
+
+var tempElem = null
+
+export function Import(type, file) {
+	if ( type == "css" ) {
+		tempElem = document.createElement("link")
+		tempElem.setAttribute("href", file)
+		tempElem.setAttribute("rel", "stylesheet")
+		tempElem.setAttribute("type", "text/css")
+
+		document.head.appendChild(tempElem)
+	}
+
+	if ( type == "js" ) {
+		tempElem = document.createElement("script")
+		tempElem.setAttribute("src", file)
+		tempElem.setAttribute("defer", true)
+
+		document.head.appendChild(tempElem)
+	}
+
+	if ( type == "jsModule" ) {
+		tempElem = document.createElement("script")
+		tempElem.setAttribute("src", file)
+		tempElem.setAttribute("type", "module")
+
+		document.head.appendChild(tempElem)
 	}
 }
