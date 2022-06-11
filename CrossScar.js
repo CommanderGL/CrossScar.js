@@ -96,3 +96,11 @@ export function Import(type, file) {
 		document.head.appendChild(tempElem)
 	}
 }
+
+export function Router(route, file) {
+	window.addEventListener('popstate', e => {
+		if (window.location.hash == "#" + route) {
+			
+		}
+	})
+}
