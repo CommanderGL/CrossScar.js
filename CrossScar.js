@@ -1,3 +1,5 @@
+const components = []
+
 export default class Scar {
 	constructor(options) {
 		this.parent = options.parent
@@ -10,7 +12,19 @@ export default class Scar {
 			this.tempElem = document.createElement("input")
 			this.tempElem.setAttribute("type", "text")
 		} else {
-			this.tempElem = document.createElement(element.type)
+			components.forEach(com => {
+				if (com.type = element.type) {
+					this.component = com
+				}
+			})
+			if (this.component) {
+				this.tempElem = document.createElement("div")
+				this.component.children.forEach(child => {
+					this.tempElem.appendChild(child)
+				})
+			} else {
+				this.tempElem = document.createElement(element.type)
+			}
 		}
 		if (element.props) {
 			element.props.forEach(prop => {
@@ -97,10 +111,13 @@ export function Import(type, file) {
 	}
 }
 
-export function Router(route, file) {
-	window.addEventListener('popstate', e => {
-		if (window.location.hash == "#" + route) {
-			
-		}
-	})
+const tempObject = {}
+const ComponentOptions = null
+
+export function CreateComponent(cb) {
+	ComponentOptions = cb()
+	tempObject.type = ComponentOptions.name
+	tempObject.children = ComponentOptions.defaultChildren
+
+	components.push(tempObject)
 }
