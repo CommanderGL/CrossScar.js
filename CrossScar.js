@@ -8,24 +8,29 @@ export default class Scar {
 	}
 
 	append(element) {
-		if ( element.type == "text" ) {
-			this.tempElem = document.createElement("input")
-			this.tempElem.setAttribute("type", "text")
-		} else {
-			components.forEach(com => {
-				if (com.type = element.type) {
-					this.component = com
-				}
-			})
-			if (this.component) {
+		components.forEach(com => {
+			if (com.type == element.type) {
+				this.component = com
+			}
+		})
+		if (this.component) {
+			if (this.component.children.length == 1) {
+				this.tempElem = document.createElement(this.component.children[0].nodeName)
+				this.component.children[0].getAttributeNames().forEach(atr => {
+					this.tempElem.setAttribute(atr, this.component.children[0].getAttribute(atr))
+				})
+				this.tempElem.innerHTML = this.component.children[0].innerHTML
+			} else {
 				this.tempElem = document.createElement("div")
+				this.tempElem.classList.add(element.type)
 				this.component.children.forEach(child => {
 					this.tempElem.appendChild(child)
 				})
-			} else {
-				this.tempElem = document.createElement(element.type)
 			}
+		} else {
+			this.tempElem = document.createElement(element.type)
 		}
+		
 		if (element.props) {
 			element.props.forEach(prop => {
 				this.tempElem.setAttribute(prop.prop, prop.value)
@@ -125,7 +130,11 @@ export function CreateComponent(ComponentOptions) {
 
 export function CreateElem(options) {
 	tempElem = document.createElement(options.type)
-	tempElem.innerHTML = options.html
+	if ( options.html ) {
+		tempElem.innerHTML = options.html
+	} else {
+		tempElem.innerHTML = ""
+	}
 
 	if (options.props) {
 		options.props.forEach(prop => {
@@ -135,3 +144,5 @@ export function CreateElem(options) {
 
 	return tempElem
 }
+
+CreateComponent({ name: "text", defaultChildren: [ CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] }) ] })
