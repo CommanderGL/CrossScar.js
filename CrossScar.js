@@ -30,7 +30,7 @@ export default class Scar {
 		} else {
 			this.tempElem = document.createElement(element.type)
 		}
-		
+
 		if (element.props) {
 			element.props.forEach(prop => {
 				this.tempElem.setAttribute(prop.prop, prop.value)
@@ -45,7 +45,7 @@ export default class Scar {
 		}
 
 		this.parent.appendChild(this.tempElem)
-		
+
 		return new Scar({ parent: this.tempElem })
 	}
 
@@ -92,7 +92,7 @@ export default class Scar {
 var tempElem = null
 
 export function Import(type, file) {
-	if ( type == "css" ) {
+	if (type == "css") {
 		tempElem = document.createElement("link")
 		tempElem.setAttribute("href", file)
 		tempElem.setAttribute("rel", "stylesheet")
@@ -101,7 +101,7 @@ export function Import(type, file) {
 		document.head.appendChild(tempElem)
 	}
 
-	if ( type == "js" ) {
+	if (type == "js") {
 		tempElem = document.createElement("script")
 		tempElem.setAttribute("src", file)
 		tempElem.setAttribute("defer", true)
@@ -109,7 +109,7 @@ export function Import(type, file) {
 		document.head.appendChild(tempElem)
 	}
 
-	if ( type == "jsModule" ) {
+	if (type == "jsModule") {
 		tempElem = document.createElement("script")
 		tempElem.setAttribute("src", file)
 		tempElem.setAttribute("type", "module")
@@ -130,7 +130,7 @@ export function CreateComponent(ComponentOptions) {
 
 export function CreateElem(options) {
 	tempElem = document.createElement(options.type)
-	if ( options.html ) {
+	if (options.html) {
 		tempElem.innerHTML = options.html
 	} else {
 		tempElem.innerHTML = ""
@@ -145,4 +145,9 @@ export function CreateElem(options) {
 	return tempElem
 }
 
-CreateComponent({ name: "text", defaultChildren: [ CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] }) ] })
+CreateComponent({
+	name: "text",
+	defaultChildren: [
+		CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] })
+	]
+})
