@@ -32,6 +32,15 @@ export default class Scar {
 				this.tempElem.setAttribute(prop.prop, prop.value)
 			})
 		}
+
+		if (element.events) {
+			element.events.forEach(event => {
+				this.tempElem.addEventListener(event.name, e => {
+					event.cb(e)
+				})
+			})
+		}
+		
 		if (element.html) {
 			this.tempElem.innerHTML = element.html
 		} else {
