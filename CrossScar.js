@@ -34,7 +34,9 @@ export default class Scar {
 		if (element.html) {
 			this.tempElem.innerHTML = element.html
 		} else {
-			this.tempElem.innerHTML = ""
+			if (!this.component) {
+				this.tempElem.innerHTML = ""
+			}
 		}
 
 		this.parent.appendChild(this.tempElem)
@@ -114,10 +116,22 @@ export function Import(type, file) {
 const tempObject = {}
 const ComponentOptions = null
 
-export function CreateComponent(cb) {
-	ComponentOptions = cb()
+export function CreateComponent(ComponentOptions) {
 	tempObject.type = ComponentOptions.name
 	tempObject.children = ComponentOptions.defaultChildren
 
 	components.push(tempObject)
+}
+
+export function CreateElem(options) {
+	tempElem = document.createElement(options.type)
+	tempElem.innerHTML = options.html
+
+	if (options.props) {
+		options.props.forEach(prop => {
+			tempElem.setAttribute(prop.prop, prop.value)
+		})
+	}
+
+	return tempElem
 }
