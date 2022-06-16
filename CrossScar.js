@@ -15,11 +15,7 @@ export default class Scar {
 		})
 		if (this.component) {
 			if (this.component.children.length == 1) {
-				this.tempElem = document.createElement(this.component.children[0].nodeName)
-				this.component.children[0].getAttributeNames().forEach(atr => {
-					this.tempElem.setAttribute(atr, this.component.children[0].getAttribute(atr))
-				})
-				this.tempElem.innerHTML = this.component.children[0].innerHTML
+				this.tempElem = this.component.children[0]
 			} else {
 				this.tempElem = document.createElement("div")
 				this.tempElem.classList.add(element.type)
@@ -143,6 +139,10 @@ export function CreateElem(options) {
 	}
 
 	return tempElem
+}
+
+export function CreateReturn() {
+	return document.createElement("br")
 }
 
 CreateComponent({
