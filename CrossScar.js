@@ -23,6 +23,14 @@ export default class Scar {
 					this.tempElem.appendChild(child)
 				})
 			}
+
+			if (this.component.events) {
+				this.component.events.forEach(event => {
+					this.tempElem.addEventListener(event.name, e => {
+						event.cb(e)
+					})
+				})
+			}
 		} else {
 			this.tempElem = document.createElement(element.type)
 		}
@@ -38,6 +46,12 @@ export default class Scar {
 				this.tempElem.addEventListener(event.name, e => {
 					event.cb(e)
 				})
+			})
+		}
+
+		if ( element.children ) {
+			element.children.forEach(child => {
+				this.tempElem.appendChild(child)
 			})
 		}
 		
@@ -129,6 +143,7 @@ const ComponentOptions = null
 export function CreateComponent(ComponentOptions) {
 	tempObject.type = ComponentOptions.name
 	tempObject.children = ComponentOptions.defaultChildren
+	tempObject.events = ComponentOptions.defaultEvents
 
 	components.push(tempObject)
 }
