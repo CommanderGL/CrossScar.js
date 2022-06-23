@@ -1,2 +1,9 @@
 .replit
 replit.nix
+docs/
+*.html
+*.css
+Navbar.js
+index.js
+imgs/
+.config/

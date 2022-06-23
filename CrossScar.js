@@ -1,4 +1,5 @@
 const components = []
+const customEvents = []
 
 export default class Scar {
 	constructor(options) {
@@ -26,9 +27,18 @@ export default class Scar {
 
 			if (this.component.events) {
 				this.component.events.forEach(event => {
-					this.tempElem.addEventListener(event.name, e => {
-						event.cb(e)
+					customEvents.forEach(customEvent => {
+						if (customEvent.name == event.name) {
+							this.customEvent = customEvent
+						}
 					})
+					if (this.customEvent) {
+						this.tempElem.addEventListener(this.customEvent.baseEvent, this.customEvent.cb)
+					} else {
+						this.tempElem.addEventListener(event.name, e => {
+							event.cb(e)
+						})
+					}
 				})
 			}
 		} else {
@@ -43,9 +53,18 @@ export default class Scar {
 
 		if (element.events) {
 			element.events.forEach(event => {
-				this.tempElem.addEventListener(event.name, e => {
-					event.cb(e)
+				customEvents.forEach(customEvent => {
+					if (customEvent.name == event.name) {
+						this.customEvent = customEvent
+					}
 				})
+				if (this.customEvent && event.isCustom == true) {
+					this.tempElem.addEventListener(this.customEvent.baseEvent, this.customEvent.cb)
+				} else {
+					this.tempElem.addEventListener(event.name, e => {
+						event.cb(e)
+					})
+				}
 			})
 		}
 
@@ -94,6 +113,11 @@ export default class Scar {
 
 	return() {
 		this.append({ type: "br" })
+		return this
+	}
+
+	line() {
+		this.append({ type: "hr" })
 		return this
 	}
 
@@ -165,7 +189,15 @@ export function CreateElem(options) {
 	return tempElem
 }
 
-export function CreateReturn() {
+export function CreateEvent(options) {
+	customEvents.push(options)
+	/*
+		syntax:
+			{ name: $name, baseEvent: $event, cb: $cb }
+	*/
+}
+
+export function CreateReturnElem() {
 	return document.createElement("br")
 }
 

@@ -1,5 +1,5 @@
 # CrossScar
 
-CrossScar is a small API with a huge potental.
+CrossScar is a small FrameWork with a huge potental.
 
-I think it is best that users of this API look into the code to learn CrossScars functions.
+I think it is best that users of this FrameWork look into the code to learn CrossScars functions.
