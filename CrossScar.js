@@ -213,6 +213,10 @@ export function CreateReturnElem() {
 	return document.createElement("br")
 }
 
+export function CreateLineElem() {
+	return document.createElement("hr")
+}
+
 CreateComponent({
 	name: "text",
 	defaultChildren: [
