@@ -87,6 +87,14 @@ export default class Scar {
 		return new Scar({ parent: this.tempElem })
 	}
 
+	appendElem(elem) {
+		this.parent.appendChild(elem)
+	}
+
+	getElem() {
+		return this.parent
+	}
+
 	get elem() {
 		return this.parent
 	}
@@ -125,6 +133,10 @@ export default class Scar {
 		this.parent.addEventListener(event, e => {
 			cb(e)
 		})
+	}
+
+	getChildren() {
+		return this.parent.children
 	}
 
 	get children() {
