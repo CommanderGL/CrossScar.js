@@ -18,10 +18,11 @@ export default class Scar {
 		})
 		if (this.component) {
 			if (typeof this.component == "array") {
-				if (this.component.length === 1) {
+				if (this.component.length == 1) {
 					this.tempElem = this.component[0]
 				} else {
 					this.tempElem = document.createElement("div")
+					this.tempElem.classList.add(element.type)
 					this.component.forEach(child => {
 						this.tempElem.appendChild(child)
 					})
@@ -124,19 +125,19 @@ export default class Scar {
 	}
 
 	getChildren() {
-		return [...this.parent.children]
+		return this.parent.children
 	}
 
 	get children() {
-		return[...this.parent.children]
-	}
-
-	setProp(prop, value) {
-		this.parent.setAttribute(prop, value)
+		return this.parent.children
 	}
 
 	getProp(prop) {
-		this.parent.getAttribute(prop)
+		return this.parent.getAttribute(prop)
+	}
+
+	setProp(prop, value) {
+		return this.parent.setAttribute(prop, value)
 	}
 }
 
@@ -206,10 +207,6 @@ export function CreateLineElem() {
 	return document.createElement("hr")
 }
 
-const text = () => {
+CreateComponent(function text() {
 	return CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] })
-}
-
-CreateComponent(text)
-
-//Hi
+})
