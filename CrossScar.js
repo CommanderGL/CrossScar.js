@@ -11,37 +11,23 @@ export default class Scar {
 	}
 
 	append(element) {
-		components.forEach(com => {
-			if (com.type == element.type) {
-				this.component = com
+		components.forEach(cb => {
+			if (cb.name == element.type) {
+				this.component = cb(element.props)
 			}
 		})
 		if (this.component) {
-			if (this.component.children.length == 1) {
-				this.tempElem = this.component.children[0]
-			} else {
-				this.tempElem = document.createElement("div")
-				this.tempElem.classList.add(element.type)
-				this.component.children.forEach(child => {
-					this.tempElem.appendChild(child)
-				})
-			}
-
-			if (this.component.events) {
-				this.component.events.forEach(event => {
-					customEvents.forEach(customEvent => {
-						if (customEvent.name == event.name) {
-							this.customEvent = customEvent
-						}
+			if (typeof this.component == "array") {
+				if (this.component.length === 1) {
+					this.tempElem = this.component[0]
+				} else {
+					this.tempElem = document.createElement("div")
+					this.component.forEach(child => {
+						this.tempElem.appendChild(child)
 					})
-					if (this.customEvent) {
-						this.tempElem.addEventListener(this.customEvent.baseEvent, this.customEvent.cb)
-					} else {
-						this.tempElem.addEventListener(event.name, e => {
-							event.cb(e)
-						})
-					}
-				})
+				}
+			} else {
+				this.tempElem = this.component
 			}
 		} else {
 			this.tempElem = document.createElement(element.type)
@@ -138,11 +124,19 @@ export default class Scar {
 	}
 
 	getChildren() {
-		return this.parent.children
+		return [...this.parent.children]
 	}
 
 	get children() {
-		return this.parent.children
+		return[...this.parent.children]
+	}
+
+	setProp(prop, value) {
+		this.parent.setAttribute(prop, value)
+	}
+
+	getProp(prop) {
+		this.parent.getAttribute(prop)
 	}
 }
 
@@ -175,15 +169,8 @@ export function Import(type, file) {
 	}
 }
 
-const tempObject = {}
-const ComponentOptions = null
-
-export function CreateComponent(ComponentOptions) {
-	tempObject.type = ComponentOptions.name
-	tempObject.children = ComponentOptions.defaultChildren
-	tempObject.events = ComponentOptions.defaultEvents
-
-	components.push(tempObject)
+export function CreateComponent(cb) {
+	components.push(cb)
 }
 
 export function CreateElem(options) {
@@ -219,9 +206,10 @@ export function CreateLineElem() {
 	return document.createElement("hr")
 }
 
-CreateComponent({
-	name: "text",
-	defaultChildren: [
-		CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] })
-	]
-})
+const text = () => {
+	return CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] })
+}
+
+CreateComponent(text)
+
+//Hi
