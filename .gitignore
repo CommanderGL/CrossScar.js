@@ -7,3 +7,5 @@ docs/
 Navbar.js
 index.js
 videos/
+*.sh
+commands/
