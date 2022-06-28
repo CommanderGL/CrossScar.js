@@ -35,8 +35,8 @@ export default class Scar {
 		}
 
 		if (element.props) {
-			element.props.forEach(prop => {
-				this.tempElem.setAttribute(prop.prop, prop.value)
+			Object.entries(element.props).forEach(([key, value] = entrie) => {
+				this.tempElem.setAttribute(key, value)
 			})
 		}
 
@@ -125,11 +125,11 @@ export default class Scar {
 	}
 
 	getChildren() {
-		return this.parent.children
+		return [...this.parent.children]
 	}
 
 	get children() {
-		return this.parent.children
+		return [...this.parent.children]
 	}
 
 	getProp(prop) {
@@ -183,8 +183,8 @@ export function CreateElem(options) {
 	}
 
 	if (options.props) {
-		options.props.forEach(prop => {
-			tempElem.setAttribute(prop.prop, prop.value)
+		Object.entries(options.props).forEach(([key, value] = entrie) => {
+			tempElem.setAttribute(key, value)
 		})
 	}
 
@@ -208,5 +208,5 @@ export function CreateLineElem() {
 }
 
 CreateComponent(function text() {
-	return CreateElem({ type: "input", props: [{ prop: "type", value: "text" }] })
+	return CreateElem({ type: "input", props: { type: "text" } })
 })
