@@ -34,7 +34,7 @@ export default class Scar {
 			this.tempElem = document.createElement(element.type)
 		}
 
-		if (element.props) {
+		if (element.props && !this.component) {
 			Object.entries(element.props).forEach(([key, value] = entrie) => {
 				this.tempElem.setAttribute(key, value)
 			})
