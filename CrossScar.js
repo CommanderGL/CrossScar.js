@@ -1,6 +1,10 @@
 "use strict"
 
-const components = []
+const components = [
+	function text() {
+		return CreateElem({ type: "input", props: { type: "text" } })
+	}
+]
 const customEvents = []
 
 export default class Scar {
@@ -13,7 +17,7 @@ export default class Scar {
 	append(element) {
 		components.forEach(cb => {
 			if (cb.name == element.type) {
-				this.component = cb(element.props)
+				this.component = cb(element.props, element.html, element.children)
 			}
 		})
 		if (this.component) {
@@ -57,18 +61,24 @@ export default class Scar {
 			})
 		}
 
-		if ( element.children ) {
+		if ( element.children && !this.component ) {
 			element.children.forEach(child => {
 				this.tempElem.appendChild(child)
 			})
 		}
 		
-		if (element.html) {
+		if (element.html && !this.component) {
 			this.tempElem.innerHTML = element.html
 		} else {
 			if (!this.component) {
 				this.tempElem.innerHTML = ""
 			}
+		}
+
+		if (element.css) {
+			Object.entries(element.css).forEach(([key, value] = entrie) => {
+				eval(`this.tempElem.style.${key} = "${value}"`)
+			})
 		}
 
 		this.parent.appendChild(this.tempElem)
@@ -139,6 +149,15 @@ export default class Scar {
 	setProp(prop, value) {
 		return this.parent.setAttribute(prop, value)
 	}
+
+	setCss(prop, value) {
+		eval(`this.parent.style.${prop} = "${value}"`)
+		return this
+	}
+
+	getCss(prop) {
+		return eval(`this.parent.style.${prop}`)
+	}
 }
 
 var tempElem = null
@@ -171,7 +190,11 @@ export function Import(type, file) {
 }
 
 export function CreateComponent(cb) {
-	components.push(cb)
+	if (cb.name[0].toUpperCase() == cb.name[0]) {
+		components.push(cb)
+	} else {
+		throw `Error Component Name Must Start With An Uppercase.		Component "${cb.name}" Did Not Start With An Uppercase.`
+	}
 }
 
 export function CreateElem(options) {
@@ -185,6 +208,18 @@ export function CreateElem(options) {
 	if (options.props) {
 		Object.entries(options.props).forEach(([key, value] = entrie) => {
 			tempElem.setAttribute(key, value)
+		})
+	}
+
+	if (options.css) {
+		Object.entries(options.css).forEach(([key, value] = entrie) => {
+			eval(`tempElem.style.${key} = "${value}"`)
+		})
+	}
+
+	if (options.children) {
+		options.children.forEach(child => {
+			tempElem.appendChild(child)
 		})
 	}
 
@@ -206,7 +241,3 @@ export function CreateReturnElem() {
 export function CreateLineElem() {
 	return document.createElement("hr")
 }
-
-CreateComponent(function text() {
-	return CreateElem({ type: "input", props: { type: "text" } })
-})
