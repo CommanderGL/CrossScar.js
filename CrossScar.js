@@ -1,10 +1,6 @@
 "use strict"
 
-const components = [
-	function text() {
-		return CreateElem({ type: "input", props: { type: "text" } })
-	}
-]
+const components = []
 const customEvents = []
 
 export default class Scar {
@@ -189,8 +185,8 @@ export function Import(type, file) {
 	}
 }
 
-export function CreateComponent(cb) {
-	if (cb.name[0].toUpperCase() == cb.name[0]) {
+export function CreateComponent(cb, options) {
+	if (cb.name[0].toUpperCase() == cb.name[0] || options.overide == true) {
 		components.push(cb)
 	} else {
 		throw `Error Component Name Must Start With An Uppercase.		Component "${cb.name}" Did Not Start With An Uppercase.`
@@ -241,3 +237,9 @@ export function CreateReturnElem() {
 export function CreateLineElem() {
 	return document.createElement("hr")
 }
+
+function text() {
+	return CreateElem({ type: "input", props: { type: "text" } })
+}
+
+CreateComponent(text, { overide: true })
