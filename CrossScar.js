@@ -186,7 +186,7 @@ export function Import(type, file) {
 }
 
 export function CreateComponent(cb, options) {
-	if (cb.name[0].toUpperCase() == cb.name[0] || options.overide == true) {
+	if (cb.name[0].toUpperCase() == cb.name[0] || options.override == true) {
 		components.push(cb)
 	} else {
 		throw `Error Component Name Must Start With An Uppercase.		Component "${cb.name}" Did Not Start With An Uppercase.`
@@ -242,4 +242,4 @@ function text() {
 	return CreateElem({ type: "input", props: { type: "text" } })
 }
 
-CreateComponent(text, { overide: true })
+CreateComponent(text, { override: true })
