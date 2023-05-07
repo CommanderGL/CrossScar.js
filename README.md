@@ -1,3 +1,9 @@
+# **DEPRECATED!!**
+
+### **PLEASE USE [csSnippets](https://github.com/CommanderGL/csSnippets) INSTEAD!**
+
+---
+
 # CrossScar
 
 CrossScar is a small framework with a huge potental.
